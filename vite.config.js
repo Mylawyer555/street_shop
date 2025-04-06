@@ -8,3 +8,5 @@ export default defineConfig({
     tailwindcss(),
   ],
 })
+
+// tailwind.config.js

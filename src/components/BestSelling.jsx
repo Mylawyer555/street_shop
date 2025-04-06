@@ -2,24 +2,42 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { BiHeart } from 'react-icons/bi';
 import { IoEyeOutline } from 'react-icons/io5';
-import Products from '../Product';
+import Loader from './Loaders';
+
 
 const shuffleArray = (array) => {
   return [...array].sort(() => Math.random() - 0.5);
 };
 
 const BestSelling = () => {
-  const [displayedProducts, setDisplayedProducts] = useState([]);
-  const [visibleCount, setVisibleCount] = useState(6);
-  const maxProducts = 12;
-
-  useEffect(() => {
-    setDisplayedProducts(shuffleArray(Products));
-  }, []);
-
-  const loadMore = () => {
-    setVisibleCount((prev) => Math.min(prev + 6, maxProducts));
-  };
+  const [products, setProducts] = useState([]);
+   const [loading, setLoading] = useState(true);
+   const [error, setError] = useState(null);
+   const [visibleCount, setVisibleCount] = useState(8);
+   const [selectedProduct, setSelectedProduct] = useState(null); // Modal state
+ 
+   const loadMore = () => {
+     setVisibleCount(prev => prev + 8); // Load 8 more products
+   };
+ 
+   useEffect(() => {
+     const fetchProducts = async () => {
+       try {
+         const BASE_URL = "https://fakestoreapi.com"; // Use your API base URL
+         const { data } = await axios.get(`${BASE_URL}/products`);
+         setProducts(data);
+         console.log(data)
+       } catch (err) {
+         setError("Error loading products.");
+       } finally {
+         setLoading(false);
+       }
+     };
+     fetchProducts();
+   }, []);
+ 
+   if (loading) return <Loader />;
+   if (error) return <div className="text-red-500 text-center">{error}</div>;
 
   return (
     <div className="mt-10 w-full p-5">
@@ -28,8 +46,8 @@ const BestSelling = () => {
       </div>
 
       {/* Product Layout: Grid on Small Screens, Row on Large Screens */}
-      <div className="w-[80%] flex flex-wrap md:flex-nowrap gap-5 justify-center md:overflow-x-hidden mt-10 mx-auto">
-        {displayedProducts.slice(0, visibleCount).map((product) => (
+      <div className="w-[80%] max-w-[1000px] flex overflow-x-scroll md:flex-nowrap gap-5 justify-center md:overflow-x-hidden mt-10 mx-auto">
+        {products.slice(0, visibleCount).map(product => (
           <motion.div
             whileInView={{ opacity: 1, scale: 1 }}
             initial={{ opacity: 0, scale: 0.5 }}
@@ -43,7 +61,7 @@ const BestSelling = () => {
               whileHover={{ scale: 1.05 }}
             >
               <img
-                src={product.image_url}
+                src={product.image}
                 alt="product"
                 className="w-full h-full object-cover"
               />
@@ -76,11 +94,13 @@ const BestSelling = () => {
             {/* Product Details */}
             <div className="mt-3">
               <p className="text-[17px] font-semibold">
-                {product.product_name.split(" ").slice(0, 3).join(" ")}...
+              {product.title.length > 30
+              ? product.title.slice(0, 30) + "..."
+              : product.title}
               </p>
               <p className="text-[14px] text-black font-bold">${product.selling_price}</p>
               <span className="line-through text-[14px] text-gray-400">
-                ${product.discount_price}
+                ${product.price}
               </span>
             </div>
           </motion.div>

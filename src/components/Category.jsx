@@ -56,11 +56,20 @@ const Category = () => {
     <div className="w-full mt-10 border-b border-gray-200 p-5">
       {/* Heading */}
       <div className="border-l-8 border-l-amber-500 ml-5">
-        <h5 className="text-amber-500 font-bold ml-5">Categories</h5>
+        <motion.h5 
+        whileInView={{opacity:1, x: -1}}
+        initial={{opacity:0, x: 100}}
+        transition={{duration:1}}
+        className="text-amber-500 font-bold ml-5">Categories</motion.h5>
       </div>
-      <div className="ml-5 mt-2.5">
+      <motion.div 
+      whileInView={{opacity:1, x: 0}}
+      initial={{opacity:0, x: 100}}
+      transition={{duration:0.5}}
+
+      className="ml-5 mt-2.5">
         <h2 className="text-4xl font-bold ml-7">Browse By Category</h2>
-      </div>
+      </motion.div>
 
       {/* Category list */}
       <div className="flex flex-wrap gap-5 w-full mt-10 justify-center">
@@ -120,7 +129,11 @@ const Category = () => {
                     </p>
 
                     {/* Mobile Version of the Button (Always Visible) */}
-                    <button className="bg-black text-white w-full h-[30px] rounded-[10px] mt-4">
+                    <button
+                     className="bg-black text-white w-full h-[30px] rounded-[10px] mt-4" 
+                    >
+
+                   
                       Add to Cart
                     </button>
                   </div>

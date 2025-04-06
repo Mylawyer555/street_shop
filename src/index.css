@@ -9,8 +9,16 @@ html, body, #root {
     overflow-x: hidden;
     display: flex;
     flex-direction: column; /* Stack elements vertically */
+    
     background-color: white;
+
   }
+
+  
+img {
+  max-width: 100%;
+}
+
   /* Example: Adjusting footer items for smaller screens */
 @media (max-width: 768px) {
   footer {

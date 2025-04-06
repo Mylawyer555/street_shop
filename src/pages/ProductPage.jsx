@@ -1,12 +1,12 @@
 import Navbar from "../components/Navbar"
 import ProductDetail from "../components/ProductDetails"
+
 const ProductPage = () => {
   return (
-   <>
-     <Navbar/>
-     <ProductDetail/>
-
-   </>
+    <div className="">
+      <Navbar />
+      <ProductDetail />
+    </div>
   )
 }
 

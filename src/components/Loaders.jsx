@@ -1,10 +1,9 @@
 const Loader = () => {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="w-16 h-16 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
-      </div>
-    );
-  };
-  
-  export default Loader;
-  
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <div className="w-16 h-16 border-4 border-dashed border-gray-300 rounded-full border-t-transparent animate-spin"></div>
+    </div>
+  );
+};
+
+export default Loader;

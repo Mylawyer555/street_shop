@@ -4,6 +4,7 @@ import Category from "../components/Category"
 import Footer from "../components/Footer"
 import HeroSection from "../components/HeroSection"
 import Navbar from "../components/Navbar"
+import NewArrivalBanner from "../components/NewArrivalBanner"
 import TodaysSales from "../components/TodaysSales"
 
 
@@ -13,9 +14,11 @@ const Home = () => {
         <Navbar/>
         <HeroSection/>
         {/* <TodaysSales/> */}
-        {/* <BestSelling/> */}
+       
         <Category/>
         <AllProducts/>
+        <NewArrivalBanner/>
+         <BestSelling/>
         <Footer/>
     </>
     

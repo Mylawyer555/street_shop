@@ -69,7 +69,7 @@ const goToSlide = (index) =>{
         <div className="w-[100%] h-[100%] flex items-center justify-center ">
             {/* slide shows */}
             <div className="w-[100%] h-[100%] min-w-[200px] ">
-                <div className="w-[100%] h-[100%] flex flex-col items-center justify-center  relative " style={{backgroundColor:"darkmagenta"}}>
+                <div className="w-[100%] h-[100%] flex flex-col items-center justify-center  relative " style={{backgroundColor:"whitesmoke"}}>
                     <div className=" absolute top-32 left-auto flex flex-col items-center justify-center ">
                         <h2 className="text-2xl  text-white font-extrabold md:text-5xl lg:text-6xl ">{slides[currentIndex].title}</h2>
                         <p className="text-xl  text-white mb-9 text-center md:text-2xl ">{slides[currentIndex].description}</p>

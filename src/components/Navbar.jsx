@@ -54,7 +54,7 @@ const Navbar = () => {
         <div className="w-[60%] hidden md:flex items-center justify-between">
           <ul className="flex items-center gap-10 text-[16px]">
             <li>
-              <Link to="/home" className="text-black hover:text-amber-500">
+              <Link to="/" className="text-black hover:text-amber-500">
                 Home
               </Link>
             </li>
@@ -115,7 +115,7 @@ const Navbar = () => {
         <div className="w-full bg-white shadow-md md:hidden">
           <ul className="flex flex-col items-center py-5 text-[16px]">
             <li>
-              <Link to="/home" className="block py-2 text-black hover:text-amber-500">
+              <Link to="/" className="block py-2 text-black hover:text-amber-500">
                 Home
               </Link>
             </li>
