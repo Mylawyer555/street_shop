@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { BiHeart } from 'react-icons/bi';
+import { AiFillStar } from 'react-icons/ai';
 import { IoEyeOutline } from 'react-icons/io5';
+import axios from 'axios';
+
 import Loader from './Loaders';
+import ProductPreviewModal from "./ProductPreviewModal";
+import { Link } from 'react-router-dom';
 
 
 const shuffleArray = (array) => {
@@ -46,7 +51,7 @@ const BestSelling = () => {
       </div>
 
       {/* Product Layout: Grid on Small Screens, Row on Large Screens */}
-      <div className="w-[80%] max-w-[1000px] flex overflow-x-scroll md:flex-nowrap gap-5 justify-center md:overflow-x-hidden mt-10 mx-auto">
+      <div className="w-full max-w-[3000px] flex overflow-x-scroll md:flex-nowrap gap-5 justify-center md:overflow-x-hidden mt-10 mx-auto">
         {products.slice(0, visibleCount).map(product => (
           <motion.div
             whileInView={{ opacity: 1, scale: 1 }}
@@ -54,6 +59,8 @@ const BestSelling = () => {
             transition={{ duration: 1 }}
             className="w-full max-w-[320px] lg:max-w-[250px] mx-auto rounded-lg bg-white p-3 flex-shrink-0"
             key={product.id}
+            product={product}
+            onPreview={() => setSelectedProduct(product)} 
           >
             {/* Image Container with Hover Effect */}
             <motion.div
@@ -77,38 +84,50 @@ const BestSelling = () => {
                 Add to Cart
               </motion.button>
 
-              {/* Mobile Version of the Button (Always Visible) */}
-              <button className="absolute bottom-0 left-0 bg-black text-white w-[100%] h-[30px] shadow-md md:hidden">
-                Add to Cart
-              </button>
+              
 
               {/* Icons (Wishlist & Quick View) */}
               <div className="flex items-center justify-center absolute top-1.5 right-1 w-[30px] h-[30px] rounded-full bg-white">
                 <BiHeart className="hover:text-amber-500" />
               </div>
-              <div className="flex items-center justify-center absolute top-10 right-1 w-[30px] h-[30px] rounded-full bg-white">
+              <div onClick={() => setSelectedProduct(product)} className="flex items-center justify-center absolute top-10 right-1 w-[30px] h-[30px] rounded-full bg-white">
                 <IoEyeOutline className="hover:text-amber-500" />
               </div>
             </motion.div>
 
             {/* Product Details */}
             <div className="mt-3">
-              <p className="text-[17px] font-semibold">
-              {product.title.length > 30
-              ? product.title.slice(0, 30) + "..."
-              : product.title}
-              </p>
-              <p className="text-[14px] text-black font-bold">${product.selling_price}</p>
-              <span className="line-through text-[14px] text-gray-400">
-                ${product.price}
-              </span>
-            </div>
-          </motion.div>
-        ))}
+              <Link to={`/product/${product.id}`}>
+                 <motion.p className="text-sm font-semibold text-gray-700">
+                    {product.title.length > 30
+                      ? product.title.slice(0, 30) + "..."
+                      : product.title}
+                  </motion.p>
+              </Link>
+              
+              <p className="text-[14px] text-black font-bold">${product.price}</p>
+
+               {/* Rating */}
+              <div className="flex items-center mt-1 text-yellow-500 text-sm">
+                {[...Array(Math.round(product.rating?.rate || 0))].map((_, i) => (
+                  <AiFillStar key={i} />
+                ))}
+                <span className="ml-1 text-gray-600 text-xs">
+                  ({product.rating?.count})
+                </span>
+              </div>
+
+               {/* Add to Cart */}
+              <button className="bg-black text-white w-full h-10 rounded-lg mt-3">
+                Add to Cart
+              </button>
+                  </div>
+                </motion.div>
+              ))}
       </div>
 
       {/* Load More Button with Animation */}
-      {visibleCount < maxProducts && (
+      {visibleCount < products.length && (
         <div className="flex justify-center mt-6">
           <motion.button
             whileHover={{ scale: 1.1, backgroundColor: "orange" }}
@@ -119,6 +138,13 @@ const BestSelling = () => {
             Load More
           </motion.button>
         </div>
+      )}
+
+      {selectedProduct && (
+        <ProductPreviewModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)} // Close modal
+        />
       )}
     </div>
   );

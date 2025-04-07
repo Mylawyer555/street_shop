@@ -73,7 +73,7 @@ const goToSlide = (index) =>{
                     <div className=" absolute top-32 left-auto flex flex-col items-center justify-center ">
                         <h2 className="text-2xl  text-white font-extrabold md:text-5xl lg:text-6xl ">{slides[currentIndex].title}</h2>
                         <p className="text-xl  text-white mb-9 text-center md:text-2xl ">{slides[currentIndex].description}</p>
-                        <Link className="  md:mx-auto px-3 py-2 shadow-md border-2 border-white text-white rounded-[8px] hover:bg-white hover:text-black">Shop Now</Link>
+                        <a className="  md:mx-auto px-5 py-2 shadow-md border-2 border-white text-white rounded-[8px] hover:bg-white hover:text-black" href="#all-products">Shop Now</a>
                     </div>
                     <img 
                     src={slides[currentIndex].image} alt="slides" className="w-full h-[100%] object-cover  "/>

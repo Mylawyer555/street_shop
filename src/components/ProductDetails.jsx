@@ -41,7 +41,7 @@ const ProductPage = () => {
     <div className=" w-full mx-auto mt-10 flex flex-col items-center justify-center lg:flex-row gap-10 p-5">
       {/* product image */}
       <motion.div
-        className="w-full  lg:w-[70%]  border border-gray-300"
+        className="w-full  lg:w-[70%]  "
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}

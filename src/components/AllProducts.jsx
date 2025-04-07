@@ -34,9 +34,9 @@ const AllProducts = () => {
   if (error) return <div className="text-red-500 text-center">{error}</div>;
 
   return (
-    <div className="mt-10 w-full p-5">
+    <section id="all-products" className="mt-10 w-full p-5">
       <h2 className="w-[80%] text-4xl font-bold ml-7">Browse all Products</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
+      <div  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
         {products.slice(0, visibleCount).map(product => (
           <ProductCard
             key={product.id}
@@ -64,7 +64,7 @@ const AllProducts = () => {
           onClose={() => setSelectedProduct(null)} // Close modal
         />
       )}
-    </div>
+    </section>
   );
 };
 

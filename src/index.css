@@ -9,8 +9,8 @@ html, body, #root {
     overflow-x: hidden;
     display: flex;
     flex-direction: column; /* Stack elements vertically */
-    
     background-color: white;
+    scroll-behavior: smooth;
 
   }
 

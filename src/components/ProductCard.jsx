@@ -13,31 +13,39 @@ const ProductCard = ({ product, onPreview }) => {
       transition={{ duration: 0.6 }}
       className="border border-gray-100 rounded-xl bg-white p-3 shadow-sm relative flex flex-col"
     >
-      {/* Image Section */}
-      <div className="relative h-52 md:h-64 rounded-md overflow-hidden">
+      {/* Image Section with Desktop Hover Zoom */}
+      <div className="relative h-52 md:h-64 rounded-md overflow-hidden group">
         <img
           src={product.image}
           alt={product.title}
-          className="w-full h-full object-contain md:object-cover"
+          className="w-full h-full object-contain md:object-cover transition-transform duration-500 ease-in-out md:group-hover:scale-110"
         />
-        {/* Quick Actions (Heart and Eye) */}
-        <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-100 transition-opacity duration-300">
-          <div className="bg-white p-1.5 rounded-full shadow-md cursor-pointer hover:bg-amber-500">
+
+        {/* Quick Actions (Always visible on mobile, hover on desktop) */}
+        <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
+          <motion.div
+            whileTap={{ scale: 0.9 }}
+            className="bg-white p-1.5 rounded-full shadow-md cursor-pointer hover:bg-amber-500"
+          >
             <BiHeart className="text-lg hover:text-white" />
-          </div>
-          <div
+          </motion.div>
+          <motion.div
+            whileTap={{ scale: 0.9 }}
             onClick={onPreview}
             className="bg-white p-1.5 rounded-full shadow-md cursor-pointer hover:bg-amber-500"
           >
             <IoEyeOutline className="text-lg hover:text-white" />
-          </div>
+          </motion.div>
         </div>
       </div>
 
       {/* Product Info Section */}
       <div className="mt-3 flex flex-col justify-between flex-grow">
         <Link to={`/product/${product.id}`}>
-          <motion.p className="text-sm font-semibold text-gray-700">
+          <motion.p
+            whileTap={{ scale: 0.98 }}
+            className="text-sm font-semibold text-gray-700 hover:text-amber-600 transition-colors"
+          >
             {product.title.length > 30
               ? product.title.slice(0, 30) + "..."
               : product.title}
@@ -55,10 +63,14 @@ const ProductCard = ({ product, onPreview }) => {
           </span>
         </div>
 
-        {/* Add to Cart */}
-        <button className="bg-black text-white w-full h-10 rounded-lg mt-3">
+        {/* Add to Cart Button - Tap & Hover Effects */}
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="bg-black text-white w-full h-10 rounded-lg mt-3 transition-colors duration-300 md:hover:bg-amber-500"
+        >
           Add to Cart
-        </button>
+        </motion.button>
       </div>
     </motion.div>
   );
