@@ -4,8 +4,14 @@ import { IoEyeOutline } from "react-icons/io5";
 import { AiFillStar } from "react-icons/ai";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 
 const ProductCard = ({ product, onPreview }) => {
+
+  const { addToCart } = useCart();
+
+
+
   return (
     <motion.div
       whileInView={{ opacity: 1, y: 0 }}
@@ -65,6 +71,7 @@ const ProductCard = ({ product, onPreview }) => {
 
         {/* Add to Cart Button - Tap & Hover Effects */}
         <motion.button
+          onClick={() => addToCart(product)}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="bg-black text-white w-full h-10 rounded-lg mt-3 transition-colors duration-300 md:hover:bg-amber-500"

@@ -38,10 +38,10 @@ const ProductPage = () => {
   const isClothing = product.category === "clothes"; // Assuming category indicates clothing
 
   return (
-    <div className=" w-full mx-auto mt-10 flex flex-col items-center justify-center lg:flex-row gap-10 p-5">
+    <div className=" w-full   mx-auto mt-10 flex flex-col  justify-center lg:flex-row gap-10 p-5">
       {/* product image */}
       <motion.div
-        className="w-full  lg:w-[70%]  "
+        className="w-[60%]  flex  justify-center lg:w-[30%]  "
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -50,10 +50,11 @@ const ProductPage = () => {
           <img
             src={product.image}
             alt={product.title}
-            className="w-full max-w-[500px] mx-auto h-auto object-contain lg:object-cover"
+           
+            className="w-full max-w-[500px] mx-auto  object-contain lg:object-cover lg:h-[60%]"
           />
         ) : (
-          <div className="w-full h-[300px] bg-gray-200 flex items-center justify-center">
+          <div className="w-ful h-[300px] bg-gray-200 flex items-center justify-center">
             <p>Image not available</p>
           </div>
         )}
@@ -61,7 +62,7 @@ const ProductPage = () => {
 
       {/* product details */}
       <motion.div
-        className="w-full lg:w-[40%] px-5"
+        className="w-full lg:w-[40%] px-5 "
         whileInView={{opacity:1, x: 0}}
         initial={{opacity:0, x: 100}}
         transition={{duration:1}}

@@ -9,40 +9,39 @@ import Loader from './Loaders';
 import ProductPreviewModal from "./ProductPreviewModal";
 import { Link } from 'react-router-dom';
 
-
 const shuffleArray = (array) => {
   return [...array].sort(() => Math.random() - 0.5);
 };
 
 const BestSelling = () => {
   const [products, setProducts] = useState([]);
-   const [loading, setLoading] = useState(true);
-   const [error, setError] = useState(null);
-   const [visibleCount, setVisibleCount] = useState(8);
-   const [selectedProduct, setSelectedProduct] = useState(null); // Modal state
- 
-   const loadMore = () => {
-     setVisibleCount(prev => prev + 8); // Load 8 more products
-   };
- 
-   useEffect(() => {
-     const fetchProducts = async () => {
-       try {
-         const BASE_URL = "https://fakestoreapi.com"; // Use your API base URL
-         const { data } = await axios.get(`${BASE_URL}/products`);
-         setProducts(data);
-         console.log(data)
-       } catch (err) {
-         setError("Error loading products.");
-       } finally {
-         setLoading(false);
-       }
-     };
-     fetchProducts();
-   }, []);
- 
-   if (loading) return <Loader />;
-   if (error) return <div className="text-red-500 text-center">{error}</div>;
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [visibleCount, setVisibleCount] = useState(8);
+  const [selectedProduct, setSelectedProduct] = useState(null); // Modal state
+
+  const loadMore = () => {
+    setVisibleCount(prev => prev + 8); // Load 8 more products
+  };
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const BASE_URL = "https://fakestoreapi.com"; // Use your API base URL
+        const { data } = await axios.get(`${BASE_URL}/products`);
+        setProducts(data);
+        console.log(data)
+      } catch (err) {
+        setError("Error loading products.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  if (loading) return <Loader />;
+  if (error) return <div className="text-red-500 text-center">{error}</div>;
 
   return (
     <div className="mt-10 w-full p-5">
@@ -50,14 +49,14 @@ const BestSelling = () => {
         <h2 className="text-xl font-bold ml-5">Best Selling Products</h2>
       </div>
 
-      {/* Product Layout: Grid on Small Screens, Row on Large Screens */}
-      <div className="w-full max-w-[3000px] flex overflow-x-scroll md:flex-nowrap gap-5 justify-center md:overflow-x-hidden mt-10 mx-auto">
+      {/* Product Layout with horizontal scrolling and hidden scrollbar */}
+      <div className="w-full flex overflow-x-auto gap-5 justify-center mt-10 mx-auto hide-scrollbar">
         {products.slice(0, visibleCount).map(product => (
           <motion.div
             whileInView={{ opacity: 1, scale: 1 }}
             initial={{ opacity: 0, scale: 0.5 }}
             transition={{ duration: 1 }}
-            className="w-full max-w-[320px] lg:max-w-[250px] mx-auto rounded-lg bg-white p-3 flex-shrink-0"
+            className="w-full  max-w-[320px] lg:max-w-[250px] mx-auto rounded-lg bg-white p-3 flex-shrink-0"
             key={product.id}
             product={product}
             onPreview={() => setSelectedProduct(product)} 
@@ -84,14 +83,12 @@ const BestSelling = () => {
                 Add to Cart
               </motion.button>
 
-              
-
               {/* Icons (Wishlist & Quick View) */}
               <div className="flex items-center justify-center absolute top-1.5 right-1 w-[30px] h-[30px] rounded-full bg-white">
                 <BiHeart className="hover:text-amber-500" />
               </div>
               <div onClick={() => setSelectedProduct(product)} className="flex items-center justify-center absolute top-10 right-1 w-[30px] h-[30px] rounded-full bg-white">
-                <IoEyeOutline className="hover:text-amber-500" />
+                <IoEyeOutline className="hover:text-amber-500 " />
               </div>
             </motion.div>
 
@@ -121,9 +118,9 @@ const BestSelling = () => {
               <button className="bg-black text-white w-full h-10 rounded-lg mt-3">
                 Add to Cart
               </button>
-                  </div>
-                </motion.div>
-              ))}
+            </div>
+          </motion.div>
+        ))}
       </div>
 
       {/* Load More Button with Animation */}

@@ -76,7 +76,7 @@ const goToSlide = (index) =>{
                         <a className="  md:mx-auto px-5 py-2 shadow-md border-2 border-white text-white rounded-[8px] hover:bg-white hover:text-black" href="#all-products">Shop Now</a>
                     </div>
                     <img 
-                    src={slides[currentIndex].image} alt="slides" className="w-full h-[100%] object-cover  "/>
+                    src={slides[currentIndex].image} alt="slides" className="w-full h-[100%] object-cover "/>
                    
                     {/* dot navigation */}
                     <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-2">
