@@ -10,6 +10,7 @@ import JewelryCategory from "./components/JewelryCategory.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
 import { ToastContainer } from "react-toastify";
 import Cart from "./pages/Cartpage.jsx";
+import { SearchProvider } from "./context/SearchContext.jsx";
 
 const router = createBrowserRouter([
   {
@@ -37,9 +38,11 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <CartProvider>
-      <RouterProvider router={router} />
-      <ToastContainer position="top-right" autoClose={1000}/>
-    </CartProvider>
+    <SearchProvider>
+        <CartProvider>
+          <RouterProvider router={router} />
+          <ToastContainer position="top-right" autoClose={1000}/>
+        </CartProvider>
+    </SearchProvider>
   </StrictMode>
 );

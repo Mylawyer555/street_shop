@@ -5,6 +5,7 @@ import { AiFillStar } from "react-icons/ai";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import {DrawOutlineButton} from '../components/Button'
 
 const ProductCard = ({ product, onPreview }) => {
 
@@ -70,14 +71,16 @@ const ProductCard = ({ product, onPreview }) => {
         </div>
 
         {/* Add to Cart Button - Tap & Hover Effects */}
-        <motion.button
+        {/* <motion.button
           onClick={() => addToCart(product)}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="bg-black text-white w-full h-10 rounded-lg mt-3 transition-colors duration-300 md:hover:bg-amber-500"
         >
           Add to Cart
-        </motion.button>
+        </motion.button> */}
+        <DrawOutlineButton>Add to Cart</DrawOutlineButton>
+        
       </div>
     </motion.div>
   );
