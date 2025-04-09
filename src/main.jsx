@@ -11,6 +11,8 @@ import { CartProvider } from "./context/CartContext.jsx";
 import { ToastContainer } from "react-toastify";
 import Cart from "./pages/Cartpage.jsx";
 import { SearchProvider } from "./context/SearchContext.jsx";
+import './styles.css';  // Ensure it's relative to the file you're importing in
+
 
 const router = createBrowserRouter([
   {
