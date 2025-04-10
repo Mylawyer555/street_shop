@@ -8,7 +8,6 @@ import axios from 'axios';
 import Loader from './Loaders';
 import ProductPreviewModal from "./ProductPreviewModal";
 import { Link } from 'react-router-dom';
-import {DrawOutlineButton} from '../components/Button'
 
 const shuffleArray = (array) => {
   return [...array].sort(() => Math.random() - 0.5);
@@ -116,7 +115,7 @@ const BestSelling = () => {
               </div>
 
                {/* Add to Cart */}
-             <DrawOutlineButton>Add to Cart</DrawOutlineButton>
+           
             </div>
           </motion.div>
         ))}

@@ -11,15 +11,15 @@ import TodaysSales from "../components/TodaysSales"
 const Home = () => {
   return (
     <>
-        <Navbar/>
-        <HeroSection/>
-        {/* <TodaysSales/> */}
-       
-        {/* <Category/> */}
-        <AllProducts/>
-        <NewArrivalBanner/>
-         <BestSelling/>
-        <Footer/>
+      <Navbar/>
+      <HeroSection/>
+      {/* <TodaysSales/> */}
+      
+      {/* <Category/> */}
+      <AllProducts/>
+      <NewArrivalBanner/>
+      <BestSelling/>
+      <Footer/>
     </>
     
   )

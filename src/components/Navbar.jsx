@@ -101,7 +101,7 @@ const Navbar = () => {
               className="p-2 rounded w-[190px] h-[40px] outline-none placeholder:text-[12px] text-stone-700 font-normal"
             />
             <div
-              className="w-[30px] h-[100%] flex items-center justify-center cursor-pointer"
+              className="w-[30px] h-[100%] bg-zinc-200 hover:bg-zinc-300 flex items-center justify-center cursor-pointer"
               onClick={handleSearch}
             >
               <IoIosSearch className="w-[25px] h-[25px] text-[14px] text-gray-950" />
@@ -150,7 +150,7 @@ const Navbar = () => {
               value={searchQuery}
               onChange={handleChange}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-              className="w-full rounded-bl-full rounded-tl-full py-2 px-5 bg-zinc-100 outline-none text-[12px] text-[#333] placeholder:text-[#929292]"
+              className="w-full rounded-bl-full text-[16px] rounded-tl-full py-2 px-5 bg-zinc-100 outline-none md:text-[12px] text-[#333] placeholder:text-[#929292]"
               placeholder="Search clothes, shoes, etc."
             />
           </div>
