@@ -45,6 +45,8 @@ const ProductCard = ({ product, onPreview }) => {
         </div>
       </div>
 
+      
+
       {/* Product Info Section */}
       <div className="mt-3 flex flex-col justify-between flex-grow">
         <Link to={`/product/${product.id}`}>

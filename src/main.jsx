@@ -11,6 +11,8 @@ import { CartProvider } from "./context/CartContext.jsx";
 import { ToastContainer } from "react-toastify";
 import Cart from "./pages/Cartpage.jsx";
 import { SearchProvider } from "./context/SearchContext.jsx";
+import InputField from "./components/InputFields.jsx";
+import UserRegistrationPage from "./pages/UserRegistrationPage.jsx";
 
 
 
@@ -33,8 +35,8 @@ const router = createBrowserRouter([
     element: <JewelryCategory />,
   },
   {
-    path: "/cart",
-    element: <Cart/>
+    path: "/register",
+    element: <UserRegistrationPage/>,
   },
 ]);
 
