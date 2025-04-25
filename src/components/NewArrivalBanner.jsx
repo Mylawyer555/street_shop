@@ -15,29 +15,13 @@ const NewArrivalBanner = () => {
             Categories
           </Link>
           
-          <h1 className="text-white leading-tight text-4xl lg:text-5xl font-bold my-2">
-            Enhance Your Music Experience
-          </h1>
           
-          <p className="text-[#505050] text-base lg:text-lg my-2.5">
-            Discover our latest and exclusive items
-          </p>
-          
-          <Link 
-            className="bg-amber-400 flex w-[180px] h-[60px] items-center justify-center rounded-lg text-white font-bold text-xl hover:bg-amber-500 transition-all"
-            to="/products"
-          >
-            Shop Now
-          </Link>
+         
         </div>
 
         {/* Right Banner Image */}
         <div className="banner-rgt w-full lg:w-[50%] flex items-center justify-center bg-transparent p-4 lg:p-8">
-          <img 
-            src="/jbl_speaker1-removebg-preview.png" 
-            alt="JBL Speaker" 
-            className="w-[250px] lg:w-[350px] h-auto object-contain"
-          />
+          
         </div>
         
       </div>

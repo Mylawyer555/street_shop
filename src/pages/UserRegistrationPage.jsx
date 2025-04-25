@@ -15,9 +15,11 @@ const UserRegistrationPage = () => {
     control,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isValid },
+   
   } = useForm({
     resolver: yupResolver(userSchema),
+    mode: 'onChange',
   });
 
   const onSubmit = async (data) => {
@@ -70,8 +72,8 @@ const UserRegistrationPage = () => {
           />
           <button
             type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg transition-colors duration-200 disabled:bg-[#ccc] cursor-not-allowed"
+            disabled={loading || !isValid}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg transition-colors duration-200 disabled:bg-[#ccc] disabled:cursor-not-allowed"
           >
             {loading ? 'Registering...' : 'Register'}
           </button>
