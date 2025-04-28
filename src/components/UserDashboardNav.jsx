@@ -5,21 +5,16 @@ import { MdOutlineShoppingCart } from 'react-icons/md';
 import { IoIosHeartEmpty } from 'react-icons/io';
 import { useState } from 'react';
 
-const DashboardNavbar = () => {
+const UserDashboardNavbar = () => {
   const { user, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed w-full h-[70px] bg-blue-800 shadow flex items-center justify-between px-5 md:px-10">
+    <nav className="fixed w-full h-[70px] bg-white shadow flex items-center justify-between px-5 md:px-10">
       {/* Logo */}
       <div className=" w-[150px] h-full text-xl font-bold text-gray-800 border flex items-center justify-start ">
         <NavLink to="/">
-            <img src="/Yellow_Black_Brush_Streetwear_Brand_Logo-removebg-preview.png"
-            width={120}
-            height={40}
-             alt="logo"
-             className='object-contain'
-             />
+           <h2 className='font-bold'>Admin Panel</h2>
         </NavLink>
       </div>
 
@@ -66,4 +61,4 @@ const DashboardNavbar = () => {
   );
 };
 
-export default DashboardNavbar;
+export default UserDashboardNavbar;

@@ -17,12 +17,26 @@ import { AuthProvider } from "./context/AuthContext.jsx";
 import UserDashboard from "./pages/DashboardPage.jsx";
 import AdminDashboardLayout from "./pages/admin/AdminDashboard.jsx";
 import SuperAdminDashboardLayout from "./pages/admin/SuperadminDashboard.jsx";
+import Unauthorized from "./pages/Unauthorized";
+import UserList from "./pages/admin/UserList";
+import ProtectedRoutes from "./routes/ProtectedRoutes";
+import AdminOverview from "./pages/admin/AdminOverview";
+import ViewUserProfile from "./pages/admin/ViewUserProfile";
+import AddProduct from "./pages/admin/CreateProductForm";
+import InventoryPage from "./pages/admin/InventoryPage";
+import CatalogPage from "./pages/admin/CatalogPage";
+import AnalyticsPage from "./pages/admin/AnalyticsPage";
+import UserProfile from "./pages/user/ProfilePage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
     errorElement: <NotFoundPage />,
+  },
+  {
+    path: "/unauthorized", // 👈 add this route
+    element: <Unauthorized />,
   },
   {
     path: "/product/:id",
@@ -41,17 +55,40 @@ const router = createBrowserRouter([
     element: <LoginForm />,
   },
   {
-    path: "/dashboard",
-    element: <UserDashboard/>
+    path: "/profile",
+    element: <UserProfile />,
   },
   {
-    path: "/admin-dashboard",
-    element: <AdminDashboardLayout/>
+    path: "/cart",
+    element: <Cart />,
   },
+
+  // admin routes
   {
-    path: "/superadmin-dashboard",
-    element: <SuperAdminDashboardLayout/>
-  }
+    element: <ProtectedRoutes allowedRoles={["admin", "superadmin"]} />,
+    children: [
+      {
+        path: "/superadmin-dashboard",
+        element: <SuperAdminDashboardLayout />,
+        children: [
+          { index: true, element: <AdminOverview /> },
+          { path: "users", element: <UserList /> },
+          { path: "users/:id", element: <ViewUserProfile /> },
+          {
+            path: "products",
+            children: [
+              { path: "inventory", element: <InventoryPage /> },
+              { path: "create-product", element: <AddProduct /> },
+              { path: "catalog", element: <CatalogPage /> },
+            ],
+          },
+          {path: "analytics", element: <AnalyticsPage />},
+
+          // add more nested admin pages here
+        ],
+      },
+    ],
+  },
 ]);
 
 createRoot(document.getElementById("root")).render(

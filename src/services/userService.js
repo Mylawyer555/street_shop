@@ -103,15 +103,7 @@ export const deleteUser = async (userid) => {
 export const fetchSingleUser = async (userid) => {
     try {
         const response = await apiClient.get(`/users/${userid}`);
-        const {message, user} = response.data;
-        return {message, user: {
-            fullName: user.fullName,
-            email: user.email,
-            id: user._id,
-            createdAt: user.createdAt,
-            isAdmin: user.isAdmin,
-            hasShippingAddress: user.hasShippingAddress,
-        }};
+        return response.data;
     } catch (error) {
         console.log("Error fetching single user:", error);
         throw error.response?.data?.message || "Failed to fetch single user";

@@ -35,7 +35,7 @@ export default function AdminDashboardLayout() {
             <NavLink to="overview" className="block py-2 px-4 rounded hover:bg-gray-100">
               <LayoutGrid className="inline mr-2" /> Overview
             </NavLink>
-            <NavLink to="orders" className="block py-2 px-4 rounded hover:bg-gray-100">
+            <NavLink to="/orders" className="block py-2 px-4 rounded hover:bg-gray-100">
               <TbListDetails className="inline mr-2" /> Orders
             </NavLink>
 

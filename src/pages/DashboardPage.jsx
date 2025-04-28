@@ -1,7 +1,7 @@
 import { useAuth } from "../context/AuthContext";
 import { FaBars, FaUser, FaHeart, FaShoppingCart, FaCog, FaUserCircle } from "react-icons/fa";
 import { NavLink, Outlet } from "react-router-dom";
-import DashboardNavbar from "../components/DashboardNav";
+import DashboardNavbar from "../components/UserDashboardNav";
 import { div } from "framer-motion/client";
 import { Heart, ListCheckIcon, LogOut, NotebookTabs, PersonStandingIcon } from "lucide-react";
 import { BiCart } from "react-icons/bi";
@@ -113,8 +113,8 @@ const UserDashboard = () => {
   return (
     <div className="dashboard_container h-screen w-screen bg-gray-50">
         <div 
-        style={{background: "linear-gradient(90deg,rgba(64, 140, 199, 1) 0%, rgba(50, 156, 209, 1) 100%)"}}
-        className="dash_top w-full h-[70px] flex items-center border-b border-b-gray-200">
+        
+        className="dash_top bg-white w-full h-[70px] flex items-center border-b border-b-gray-200">
             <div className="dash_top__left w-[15%] h-full flex items-center bg-b ">
                 <img src="/Yellow_Black_Brush_Streetwear_Brand_Logo-removebg-preview.png"
                 width={150}
@@ -123,7 +123,7 @@ const UserDashboard = () => {
             <div className="dash_top__right w-[85%] h-full "></div>
         </div>
         <div className="dash_bottom w-[100%] min-h-[561px] flex gap-3 ">
-            <aside className="sidebar w-[20%] shadow-lg bg-gray-50 px-2.5 pt-5 flex flex-col justify-between" >
+            <aside className="sidebar w-[20%] shadow-lg bg-white px-2.5 pt-5 flex flex-col justify-between" >
             
             <nav className="space-y-2">
             {sections.map((section) => (

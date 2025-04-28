@@ -4,12 +4,14 @@ import { IoIosSearch, IoIosHeartEmpty } from "react-icons/io";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { HiMenu, HiX } from "react-icons/hi";
 import { useAuth } from "../context/AuthContext";
+import CartIcon from "./CartIcon";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [dropdownOpen, setDropdownOpen] = useState(false); // Manage the dropdown visibility
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, logout } = useAuth(); // Assuming you have a logout function
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
@@ -20,9 +22,14 @@ const Navbar = () => {
   const navLinkClass = ({ isActive }) =>
     isActive ? "text-amber-400 font-bold" : "text-gray-700";
 
+  const handleLogout = () => {
+    logout(); // Assuming you have a logout function in your AuthContext
+    navigate("/login"); // Redirect user to the login page after logout
+  };
+
   return (
     <nav className="w-full h-[70px] bg-white shadow-md sticky top-0 z-50">
-      <div className="max-w-7xl h-full mx-auto px-4 py-3 flex justify-between items-center ">
+      <div className="max-w-7xl h-full mx-auto px-4 py-3 flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center w-[150px] h-[60px]">
           <img
@@ -64,21 +71,47 @@ const Navbar = () => {
             <NavLink to="/wishlist">
               <IoIosHeartEmpty className="text-xl text-gray-800" />
             </NavLink>
-            <NavLink to="/cart" className="relative">
-              <MdOutlineShoppingCart className="text-xl text-gray-800" />
-              {/* <span className="absolute -top-1 -right-2 text-xs bg-red-500 text-white rounded-full px-1">1</span> */}
-            </NavLink>
+            <CartIcon />
 
+            {/* Show profile and dropdown only when user is logged in */}
             {user ? (
-              <div className="flex items-center space-x-2">
+              <div className="relative flex items-center space-x-2">
                 <span className="text-sm font-medium text-gray-700">
                   Welcome, {user.fullName?.split(" ")[0]}
                 </span>
-                <img
-                  src={user.profilePicture || "/profile.png"}
-                  alt="user"
-                  className="w-8 h-8 rounded-full object-cover"
-                />
+                <div
+                  className="relative"
+                  onMouseEnter={() => setDropdownOpen(true)}
+                  onMouseLeave={() => setDropdownOpen(false)}
+                >
+                  <img
+                    src={user.profilePicture || "/profile.png"}
+                    alt="user"
+                    className="w-8 h-8 rounded-full object-cover cursor-pointer"
+                  />
+                  {dropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white shadow-md rounded-md text-sm text-gray-700 p-2">
+                      <NavLink
+                        to="/account"
+                        className="block py-2 px-4 hover:bg-gray-100"
+                      >
+                        My Account
+                      </NavLink>
+                      <NavLink
+                        to="/switch-account"
+                        className="block py-2 px-4 hover:bg-gray-100"
+                      >
+                        Switch Account
+                      </NavLink>
+                      <button
+                        onClick={handleLogout}
+                        className="block w-full text-left py-2 px-4 text-red-500 hover:bg-gray-100"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             ) : (
               <button

@@ -19,6 +19,9 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
 
+  
+  
+
   const addToCart = (product) => {
     const existing = cartItems.find((item) => item.id === product.id);
 
@@ -35,6 +38,7 @@ export const CartProvider = ({ children }) => {
       toast.success(`${product.title} added to cart`);
       setCartItems((prev) => [...prev, { ...product, quantity: 1 }]);
     }
+    console.log(cartItems);
   };
 
   const removeFromCart = (id) => {
