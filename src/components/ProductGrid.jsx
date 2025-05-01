@@ -117,12 +117,18 @@ const ProductGrid = () => {
                     maximumFractionDigits: 0,
                   })}
                 </h4>
-                <button
+                {/* <button
                   onClick={() => addToCart(p)}
                   className="p-1 md:p-2 border-2 border-black rounded-full hover:bg-gray-100 transition"
                 >
                   <MdOutlineAddShoppingCart className="text-black text-xl" />
-                </button>
+                </button> */}
+                <div className="addtocart w-[50px] h-[50px] flex items-center justify-center rounded-[8px] bg-white hover:bg-gray-100 transition duration-300 cursor-pointer">
+                  <MdOutlineAddShoppingCart
+                    className="text-black text-xl cursor-pointer"
+                    onClick={() => addToCart(p)}
+                  />
+                </div>
               </div>
             </div>
           </div>

@@ -13,8 +13,17 @@ export const fetchProductList = async () => {
 export const fetchProductsById = async (id) => {
     try {
         const response = await apiClient.get(`/products/${id}`);
-        return response.data.products;
+        return response.data.productFound;
     } catch (error) {
         throw error.response?.data?.message || "Failed to load product details"
     }
 }
+
+export const deleteProduct = async (productId) => {
+    try {
+        const response = await apiClient.delete(`/products/${productId}`);
+        return response.data;
+    } catch (error) {
+        throw error.response?.data?.message || "Failed to delete product";
+    }
+};

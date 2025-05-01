@@ -27,6 +27,8 @@ import InventoryPage from "./pages/admin/InventoryPage";
 import CatalogPage from "./pages/admin/CatalogPage";
 import AnalyticsPage from "./pages/admin/AnalyticsPage";
 import UserProfile from "./pages/user/ProfilePage";
+import AboutPage from "./pages/Aboutpage";
+import ContactPage from "./pages/ContactPage";
 
 const router = createBrowserRouter([
   {
@@ -39,7 +41,7 @@ const router = createBrowserRouter([
     element: <Unauthorized />,
   },
   {
-    path: "/product/:id",
+    path: "/products/:id",
     element: <ProductPage />,
   },
   {
@@ -62,10 +64,22 @@ const router = createBrowserRouter([
     path: "/cart",
     element: <Cart />,
   },
+  {
+    path: "/myaccount",
+    element: <UserDashboard/>
+  },
+  {
+    path: "/about",
+    element: <AboutPage/>
+  },
+  {
+    path: "/contact",
+    element: <ContactPage/>
+  },
 
   // admin routes
   {
-    element: <ProtectedRoutes allowedRoles={["admin", "superadmin"]} />,
+    element: <ProtectedRoutes allowedRoles={[ "superadmin"]} />,
     children: [
       {
         path: "/superadmin-dashboard",

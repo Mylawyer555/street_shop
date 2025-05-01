@@ -103,6 +103,9 @@ const UserList = () => {
     }
   };
 
+  const handleUserView = (user) => {
+    navigate(`/superadmin-dashboard/users/${user._id}`); // ✅ Use just the ID
+  };
   return (
     <div className="space-y-4">
       <Card>
@@ -165,7 +168,7 @@ const UserList = () => {
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => navigate(`/superadmin-dashboard/users/:id`)}
+                          onClick={() => handleUserView(user)}
                           className="hover:bg-gray-200"
                         >
                           <FaEye/>

@@ -31,7 +31,7 @@ const LoginForm = () => {
             if(user.isAdmin) {
                 navigate('/superadmin-dashboard');
             }else {
-                navigate('/dashboard');
+                navigate('/');
             }
         }
     }, [user, navigate]);
@@ -55,7 +55,7 @@ const LoginForm = () => {
             if(user.isAdmin) {
                 navigate('/superadmin-dashboard');
             }else {
-                navigate('/dashboard');
+                navigate('/');
             }
         } catch (error) {
             const errorMessage = typeof error === 'string' ? error : error.message

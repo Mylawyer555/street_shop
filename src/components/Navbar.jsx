@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { IoIosSearch, IoIosHeartEmpty } from "react-icons/io";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { HiMenu, HiX } from "react-icons/hi";
@@ -31,15 +31,17 @@ const Navbar = () => {
     <nav className="w-full h-[70px] bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-7xl h-full mx-auto px-4 py-3 flex justify-between items-center">
         {/* Logo */}
-        <div className="flex items-center w-[150px] h-[60px]">
-          <img
-            src="/Yellow_Black_Brush_Streetwear_Brand_Logo-removebg-preview.png"
-            alt="logo"
-            width={100}
-            height={40}
-            className="h-full w-full object-cover"
-          />
-        </div>
+        <Link to={"/"}>
+          <div className="flex items-center w-[150px] h-[60px]">
+            <img
+              src="/Yellow_Black_Brush_Streetwear_Brand_Logo-removebg-preview.png"
+              alt="logo"
+              width={100}
+              height={40}
+              className="h-full w-full object-cover"
+            />
+          </div>
+        </Link>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center space-x-6">
@@ -90,15 +92,15 @@ const Navbar = () => {
                     className="w-8 h-8 rounded-full object-cover cursor-pointer"
                   />
                   {dropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white shadow-md rounded-md text-sm text-gray-700 p-2">
+                    <div className="absolute right-0 top-8 border w-48 bg-white shadow-md rounded-md text-sm text-gray-700 p-2">
                       <NavLink
-                        to="/account"
+                        to="/myaccount"
                         className="block py-2 px-4 hover:bg-gray-100"
                       >
                         My Account
                       </NavLink>
                       <NavLink
-                        to="/switch-account"
+                        to="/login"
                         className="block py-2 px-4 hover:bg-gray-100"
                       >
                         Switch Account

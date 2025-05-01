@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchSingleUser } from '@/services/userService';
+import { getUserById } from '@/services/AdminService';
 import { toast } from 'react-toastify';
 import {
   Card, CardContent, CardHeader, CardTitle, CardDescription
@@ -28,21 +28,27 @@ const ViewUserProfile = () => {
 
   useEffect(() => {
     const viewUser = async () => {
+      if (!id) {
+        toast.error("User ID is missing.");
+        return;
+      }
+
       try {
-        const user = await fetchSingleUser("" + id);
+        const user = await getUserById(id);
         setUserDetails(user);
       } catch (error) {
-        toast.error("Failed to fetch user details");
+        toast.error(error?.message || "Failed to fetch user details.");
+        console.error("Error fetching user:", error);
       } finally {
         setLoading(false);
       }
     };
+
     viewUser();
   }, [id]);
 
   const handleDelete = () => {
     toast.success("User deleted (simulate logic here)");
-    // Add your delete user API call here
     navigate('/admin-dashboard/users');
   };
 
@@ -66,6 +72,8 @@ const ViewUserProfile = () => {
     );
   }
 
+  const { shippingAddress } = userDetails;
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
       {/* Profile Card */}
@@ -85,7 +93,6 @@ const ViewUserProfile = () => {
             <Button variant="outline" onClick={() => navigate(-1)}>Back</Button>
             <Button onClick={() => navigate(`/admin-dashboard/users/${id}/edit`)}>Edit Profile</Button>
 
-            {/* Delete Confirmation */}
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button variant="destructive">Delete User</Button>
@@ -114,14 +121,22 @@ const ViewUserProfile = () => {
         </CardHeader>
         <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
           <div><strong>Phone:</strong> {userDetails.phone || "N/A"}</div>
-          <div><strong>Address:</strong> {userDetails.address || "N/A"}</div>
+          <div><strong>Address:</strong> {shippingAddress?.address || "N/A"}</div>
+          <div><strong>City:</strong> {shippingAddress?.city || "N/A"}</div>
+          <div><strong>Country:</strong> {shippingAddress?.country || "N/A"}</div>
+          <div><strong>Orders:</strong> {userDetails.order?.length || 0}</div>
+          <div><strong>Wishlist:</strong> {userDetails.wishLists?.length || 0}</div>
+          {userDetails.cart && (
+            <div><strong>Cart:</strong> {userDetails.cart.length}</div>
+          )}
+          {userDetails.reviews && (
+            <div><strong>Reviews:</strong> {userDetails.reviews.length}</div>
+          )}
+          {userDetails.rating !== undefined && (
+            <div><strong>Rating:</strong> {userDetails.rating}</div>
+          )}
           <div><strong>Joined:</strong> {new Date(userDetails.createdAt).toLocaleDateString()}</div>
           <div><strong>Last Updated:</strong> {new Date(userDetails.updatedAt).toLocaleDateString()}</div>
-          <div><strong>Orders:</strong> {userDetails.orders?.length || 0}</div>
-          <div><strong>Wishlist:</strong> {userDetails.wishlist?.length || 0}</div>
-          <div><strong>Cart:</strong> {userDetails.cart?.length || 0}</div>
-          <div><strong>Reviews:</strong> {userDetails.reviews?.length || 0}</div>
-          <div><strong>Rating:</strong> {userDetails.rating ?? "N/A"}</div>
         </CardContent>
       </Card>
     </div>

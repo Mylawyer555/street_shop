@@ -1,11 +1,12 @@
 import Navbar from "../components/Navbar"
-import ProductDetail from "../components/ProductDetails"
+import ProductDetails from "../components/ProductDetails"
+
 
 const ProductPage = () => {
   return (
     <div className="">
       <Navbar />
-      <ProductDetail />
+      <ProductDetails/>
     </div>
   )
 }

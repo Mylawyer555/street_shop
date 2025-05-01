@@ -188,18 +188,15 @@ export default function SuperAdminDashboardLayout() {
           <FiMenu />
         </button>
         {/* Navbar */}
-        <header className="flex items-center justify-between p-4 border-b border-gray-200 bg-white shadow-sm">
-          <div className="relative w-full max-w-md">
-            <span className="text-sm font-medium text-gray-700">
-              {getGreeting()}, {user.fullName?.split(" ")[0]}
-            </span>
-          </div>
+        <header className="flex items-center justify-end p-4 border-b border-gray-200 bg-white shadow-sm">
+          {/* <div className="relative w-full max-w-md border">
+            
+          </div> */}
 
-          <div className="flex items-center gap-4">
-            <FaBell className="text-gray-600 text-xl cursor-pointer" />
-            <span className="text-sm font-medium text-gray-700">
-              {" "}
-              Welcome, {user.fullName?.split(" ")[0]}
+          <div className="flex items-center gap-4 ">
+           
+            <span className="text-sm md:text-md  font-medium text-slate-700">
+              {getGreeting()}, {user.fullName?.split(" ")[0]}
             </span>
             <FaUserCircle className="text-3xl text-gray-500" />
           </div>

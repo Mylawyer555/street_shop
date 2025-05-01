@@ -2,11 +2,15 @@
 import { useState, useEffect } from "react";
 import { Eye, Trash2 } from "lucide-react";
 import ProductPreviewModal from "@/components/ProductPreviewModal";
+import { fetchProductList } from "@/services/AdminService";
+import { toast } from "react-toastify";
+import { deleteProduct } from "@/services/productService";
 
 export default function InventoryPage() {
   const [products, setProducts] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [previewProduct, setPreviewProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // Filters
   const [searchQuery, setSearchQuery] = useState("");
@@ -16,25 +20,37 @@ export default function InventoryPage() {
   const [selectedColor, setSelectedColor] = useState("");
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    setLoading(true);
+    const fetchProductsList = async () => {
+      try {
+        const response = await fetchProductList();
+        console.log("API response:", response);
 
-  const fetchProducts = async () => {
-    try {
-      const res = await fetch("/api/products");
-      const data = await res.json();
-      setProducts(data);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  };
+        if (Array.isArray(response)) {
+          setProducts(response); // 
+          console.log("Fetched products:", response.products); 
+          
+        }else {
+          
+          console.error("Unexpected product response shape:", response);
+          toast.error("Invalid product data format");
+          setProducts([]);
+        }
+      } catch (error) {
+        toast.error(error.message);
+        setProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProductsList();
+  }, []);
 
   const handleDelete = async (productId) => {
     if (confirm("Are you sure you want to delete this product?")) {
       try {
-        await fetch(`/api/products/${productId}`, {
-          method: "DELETE",
-        });
+        const response = await deleteProduct(productId);
+        toast.success(response.message);
         setProducts(products.filter((p) => p._id !== productId));
       } catch (error) {
         console.error("Error deleting product:", error);
@@ -44,17 +60,21 @@ export default function InventoryPage() {
 
   const toggleSelect = (productId) => {
     setSelectedProducts((prev) =>
-      prev.includes(productId) ? prev.filter((id) => id !== productId) : [...prev, productId]
+      prev.includes(productId)
+        ? prev.filter((id) => id !== productId)
+        : [...prev, productId]
     );
   };
 
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-    (selectedBrand ? product.brand === selectedBrand : true) &&
-    (selectedGender ? product.gender === selectedGender : true) &&
-    (selectedSize ? product.sizes?.includes(selectedSize) : true) &&
-    (selectedColor ? product.colors?.includes(selectedColor) : true)
-  );
+  const filteredProducts = Array.isArray(products)
+    ? products.filter((product) =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        (selectedBrand ? product.brand === selectedBrand : true) &&
+        (selectedGender ? product.gender === selectedGender : true) &&
+        (selectedSize ? product.sizes?.includes(selectedSize) : true) &&
+        (selectedColor ? product.colors?.includes(selectedColor) : true)
+      )
+    : [];
 
   return (
     <div className="bg-white p-6 rounded-lg shadow">
@@ -106,7 +126,7 @@ export default function InventoryPage() {
             className="border rounded-md px-3 py-2"
           >
             <option value="">All Sizes</option>
-            {Array.from(new Set(products.flatMap((p) => p.sizes?.split(",") || []))).map((size) => (
+            {Array.from(new Set(products.flatMap((p) => p.sizes || []))).map((size) => (
               <option key={size} value={size}>
                 {size}
               </option>
@@ -128,68 +148,76 @@ export default function InventoryPage() {
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white">
-          <thead className="bg-gray-100 text-gray-600 uppercase text-sm">
-            <tr>
-              <th className="py-3 px-6 text-left">
-                <input
-                  type="checkbox"
-                  onChange={(e) =>
-                    setSelectedProducts(e.target.checked ? filteredProducts.map((p) => p._id) : [])
-                  }
-                  checked={
-                    selectedProducts.length === filteredProducts.length &&
-                    filteredProducts.length !== 0
-                  }
-                />
-              </th>
-              <th className="py-3 px-6 text-left">Image</th>
-              <th className="py-3 px-6 text-left">Name</th>
-              <th className="py-3 px-6 text-left">Price</th>
-              <th className="py-3 px-6 text-left">Quantity</th>
-              <th className="py-3 px-6 text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredProducts.map((product) => (
-              <tr key={product._id} className="border-b hover:bg-gray-50">
-                <td className="py-3 px-6">
+      {loading ? (
+        <p>Loading products...</p>
+      ) : filteredProducts.length === 0 ? (
+        <p>No products found.</p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white">
+            <thead className="bg-gray-100 text-gray-600 uppercase text-sm">
+              <tr>
+                <th className="py-3 px-6 text-left">
                   <input
                     type="checkbox"
-                    checked={selectedProducts.includes(product._id)}
-                    onChange={() => toggleSelect(product._id)}
+                    onChange={(e) =>
+                      setSelectedProducts(
+                        e.target.checked ? filteredProducts.map((p) => p._id) : []
+                      )
+                    }
+                    checked={
+                      selectedProducts.length === filteredProducts.length &&
+                      filteredProducts.length !== 0
+                    }
                   />
-                </td>
-                <td className="py-3 px-6">
-                  <img
-                    src={product.files[0] || "/placeholder.jpg"}
-                    alt={product.name}
-                    className="w-12 h-12 object-cover rounded"
-                  />
-                </td>
-                <td className="py-3 px-6">{product.name}</td>
-                <td className="py-3 px-6">${product.price}</td>
-                <td className="py-3 px-6">{product.totalQty}</td>
-                <td className="py-3 px-6 text-center space-x-2">
-                  <button
-                    className="text-indigo-600 hover:text-indigo-900"
-                    onClick={() => setPreviewProduct(product)}
-                  >
-                    <Eye size={20} />
-                  </button>
-                  <button
-                    className="text-red-600 hover:text-red-900"
-                    onClick={() => handleDelete(product._id)}
-                  >
-                    <Trash2 size={20} />
-                  </button>
-                </td>
+                </th>
+                <th className="py-3 px-6 text-left">Image</th>
+                <th className="py-3 px-6 text-left">Name</th>
+                <th className="py-3 px-6 text-left">Price</th>
+                <th className="py-3 px-6 text-left">Quantity</th>
+                <th className="py-3 px-6 text-center">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {filteredProducts.map((product) => (
+                <tr key={product._id} className="border-b hover:bg-gray-50">
+                  <td className="py-3 px-6">
+                    <input
+                      type="checkbox"
+                      checked={selectedProducts.includes(product._id)}
+                      onChange={() => toggleSelect(product._id)}
+                    />
+                  </td>
+                  <td className="py-3 px-6">
+                    <img
+                      src={product.images?.[0] || "/placeholder.jpg"} // ✅ FIXED
+                      alt={product.name}
+                      className="w-12 h-12 object-cover rounded"
+                    />
+                  </td>
+                  <td className="py-3 px-6">{product.name}</td>
+                  <td className="py-3 px-6">₦{Number(product.price).toLocaleString()}</td>
+                  <td className="py-3 px-6">{product.totalQty}</td>
+                  <td className="py-3 px-6 text-center space-x-2">
+                    <button
+                      className="text-indigo-600 hover:text-indigo-900"
+                      onClick={() => setPreviewProduct(product)}
+                    >
+                      <Eye size={20} />
+                    </button>
+                    <button
+                      className="text-red-600 hover:text-red-900"
+                      onClick={() => handleDelete(product._id)}
+                    >
+                      <Trash2 size={20} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {/* Preview Modal */}
       {previewProduct && (

@@ -1,7 +1,7 @@
-// src/pages/catalog/CatalogPage.jsx
 import { useState, useEffect } from 'react';
 import ProductPreviewModal from '../../components/ProductPreviewModal';
 import { Eye } from 'lucide-react';
+import { fetchProductList } from "../../services/productService";
 
 export default function CatalogPage() {
   const [products, setProducts] = useState([]);
@@ -20,24 +20,37 @@ export default function CatalogPage() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch(`/api/products?page=${currentPage}&limit=${itemsPerPage}`);
-      const data = await res.json();
-      setProducts(data);
+      const response = await fetchProductList();
+      console.log("API response:", response);
+      if (Array.isArray(response)) {
+        setProducts(response);
+      } else {
+        console.error('Unexpected product response shape:', response);
+      }
     } catch (error) {
       console.error('Error fetching products:', error);
     }
   };
 
   const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+    product.name?.toLowerCase().includes(searchQuery.toLowerCase()) &&
     (selectedBrand ? product.brand === selectedBrand : true) &&
     (selectedGender ? product.gender === selectedGender : true) &&
-    (selectedSize ? product.sizes?.includes(selectedSize) : true) &&
+    (selectedSize
+      ? (Array.isArray(product.sizes)
+          ? product.sizes.includes(selectedSize)
+          : typeof product.sizes === 'string' && product.sizes.split(',').includes(selectedSize))
+      : true) &&
     (selectedColor ? product.colors?.includes(selectedColor) : true)
   );
 
+  const paginatedProducts = filteredProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   const handlePagination = (direction) => {
-    setCurrentPage((prev) => prev + direction);
+    setCurrentPage((prev) => Math.max(1, prev + direction));
   };
 
   return (
@@ -86,7 +99,17 @@ export default function CatalogPage() {
           className="border rounded-md px-3 py-2"
         >
           <option value="">All Sizes</option>
-          {Array.from(new Set(products.flatMap((p) => p.sizes?.split(',') || []))).map((size) => (
+          {Array.from(
+            new Set(
+              products.flatMap((p) =>
+                Array.isArray(p.sizes)
+                  ? p.sizes
+                  : typeof p.sizes === 'string'
+                  ? p.sizes.split(',')
+                  : []
+              )
+            )
+          ).map((size) => (
             <option key={size} value={size}>
               {size}
             </option>
@@ -109,31 +132,44 @@ export default function CatalogPage() {
 
       {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredProducts.map((product) => (
+        {paginatedProducts.map((product) => (
           <div
             key={product._id}
             className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300"
           >
             <img
-              src={product.files[0] || '/placeholder.jpg'}
-              alt={product.name}
+              src={
+                Array.isArray(product.files) && product.files.length > 0 && typeof product.files[0] === 'string'
+                  ? product.files[0]
+                  : '/placeholder.jpg'
+              }
+              alt={product.name || 'Product Image'}
               className="w-full h-48 object-cover"
             />
+
             <div className="p-4">
               <h2 className="text-lg font-semibold text-gray-900">{product.name}</h2>
               <p className="text-gray-700">${product.price}</p>
-              <p className="text-gray-500">Sizes: {product.sizes.join(', ')}</p>
-              <p className="text-gray-500">Colors: {product.colors.join(', ')}</p>
+              <p className="text-gray-500">
+                Sizes:{' '}
+                {Array.isArray(product.sizes)
+                  ? product.sizes.join(', ')
+                  : typeof product.sizes === 'string'
+                  ? product.sizes
+                  : 'N/A'}
+              </p>
+              <p className="text-gray-500">
+                Colors: {Array.isArray(product.colors) ? product.colors.join(', ') : 'N/A'}
+              </p>
 
               <div className="mt-4 flex justify-between items-center">
                 <button
-                  className="text-indigo-600 hover:text-indigo-800"
+                  className="text-indigo-600 hover:text-indigo-800 flex items-center gap-1"
                   onClick={() => setPreviewProduct(product)}
                 >
                   <Eye size={20} />
                   Preview
                 </button>
-                <button className="text-red-600 hover:text-red-800">Add to Cart</button>
               </div>
             </div>
           </div>
@@ -152,7 +188,7 @@ export default function CatalogPage() {
         <span className="text-lg font-medium">Page {currentPage}</span>
         <button
           onClick={() => handlePagination(1)}
-          disabled={filteredProducts.length < itemsPerPage}
+          disabled={paginatedProducts.length < itemsPerPage}
           className="bg-gray-300 text-black rounded-md px-4 py-2 disabled:opacity-50"
         >
           Next
